@@ -9,7 +9,7 @@ function App() {
 
   async function fetchDataHandler () {
     setIsLoading(true)
-    const response = await fetch("https://swapi.dev/api/films")
+    const response = await fetch("https://swapi.dev/api/film")
     const data = await response.json()
     
       const transformedMovies = data.results.map(movie => {
@@ -32,7 +32,7 @@ function App() {
       <section>
         {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
         {isLoading && movies.length === 0 && <p>Loading...</p>}
-        {!isLoading && <p>No movies found !</p>}
+        {!isLoading && <p>No movies found!</p>}
       </section>
     </React.Fragment>
   );
