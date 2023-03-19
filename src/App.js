@@ -2,20 +2,20 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
+import AddMovie from './components/AddMovie';
 
 function App() {
   const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
-
-
   const fetchDataHandler = useCallback(async () => {
     setIsLoading(true)
     setError(null)
 
     try {
-      const response = await fetch("https://swapi.dev/api/films")
+      const response = await fetch("https://reactdatabasehttp-default-rtdb.firebaseio.com/movies.json")
+      console.log(response)
 
       if (!response.ok) {
         throw new Error ("Error 404 'Not found'")
@@ -43,6 +43,17 @@ function App() {
       fetchDataHandler()
     }, [fetchDataHandler])
 
+    const addMovieHandler = (movies) => {
+      // setMovies((prev) => {
+      //   return {
+      //     id: Math.random(),
+      //     ...prev,
+      //     movies
+      //   }
+      // })
+      console.log(movies)
+    }
+
     let content = <p>No movies found</p>
     if (movies.length > 0) {
       content = <MoviesList movies={movies} />
@@ -57,6 +68,9 @@ function App() {
 
   return (
     <React.Fragment>
+      <section>
+        <AddMovie onAddMovie= {addMovieHandler}/>
+      </section>
       <section>
         <button onClick={fetchDataHandler}>Fetch Movies</button>
       </section>
