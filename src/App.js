@@ -57,9 +57,18 @@ function App() {
       console.log(data)
     }
 
+    async function removeMovieHandler (id) {
+      const response = await fetch (`https://reactdatabasehttp-default-rtdb.firebaseio.com/movies/${id}.json`, {
+        method: "DELETE"
+      })
+      const data = await response.json()
+      fetchDataHandler()
+      console.log(data)
+    }
+
     let content = <p>No movies found</p>
     if (movies.length > 0) {
-      content = <MoviesList movies={movies} />
+      content = <MoviesList movies={movies} onRemoveMovie={removeMovieHandler} />
     }
     if (error) {
       content = <p>{error}</p>
