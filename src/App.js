@@ -21,15 +21,16 @@ function App() {
         throw new Error ("Error 404 'Not found'")
       }
       const data = await response.json()
-      
-        const transformedMovies = data.results.map(movie => {
-          return {
-            id: movie.episode_id,
-            title: movie.title,
-            openingText: movie.opening_crawl,
-            releaseDate: movie.release_date
-          }
-      })
+        const transformedMovies = []
+
+        for (const key in data) {
+          transformedMovies.unshift({
+            id: key,
+            title: data[key].title,
+            releaseDate: data[key].releaseDate,
+            openingText: data[key].openingText
+          })
+        }
       setMovies(transformedMovies)
     }
 
@@ -43,15 +44,17 @@ function App() {
       fetchDataHandler()
     }, [fetchDataHandler])
 
-    const addMovieHandler = (movies) => {
-      // setMovies((prev) => {
-      //   return {
-      //     id: Math.random(),
-      //     ...prev,
-      //     movies
-      //   }
-      // })
-      console.log(movies)
+    async function addMovieHandler (movies) {
+      const response = await fetch("https://reactdatabasehttp-default-rtdb.firebaseio.com/movies.json", {
+        method: "POST",
+        body: JSON.stringify(movies),
+        headers: {
+          "Content-Type": 'application/json'
+        }
+      })
+      const data = await response.json()
+      fetchDataHandler()
+      console.log(data)
     }
 
     let content = <p>No movies found</p>
@@ -63,7 +66,7 @@ function App() {
     }
 
     if (isLoading) {
-      content = <p>Loading</p>
+      content = <p>Loading...</p>
     }
 
   return (
