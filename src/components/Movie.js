@@ -9,6 +9,7 @@ const Movie = (props) => {
       <h3>{props.releaseDate}</h3>
       <p>{props.openingText}</p>
       <button onClick={props.onDelete}>DELETE</button>
+      <button onClick={props.onEdit}>EDIT</button>
     </li>
   );
 };
